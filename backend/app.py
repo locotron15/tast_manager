@@ -18,7 +18,7 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 
-from model.models import db
+from model import db
 
 
 
@@ -41,26 +41,16 @@ def create_app():
     #importar blueprint 
     from routes.user_routes import user_bp
     app.register_blueprint(user_bp)
-    # ──────────────────────────────────────────────────────────────
-    # TODO: Registrar tus rutas acá.
-    #   Puedes ponerlas inline (no recomendado para >5 rutas)
-    #   o en un blueprint (recomendado).
-    # ──────────────────────────────────────────────────────────────
+    
+    from routes.task_routes import task_bp
+    app.register_blueprint(task_bp)
 
     @app.route("/api/health")
     def health():
         """Sanity check — déjalo así, lo usamos para verificar que tu servidor corre."""
         return jsonify({"status": "ok"})
-
-    # ──────────────────────────────────────────────────────────────
-    # TODO: Implementar /api/users (GET, POST)
-    # ──────────────────────────────────────────────────────────────
-
-    # ──────────────────────────────────────────────────────────────
-    # TODO: Implementar /api/tasks (GET con filtros, POST)
-    # TODO: Implementar /api/tasks/<id> (GET, PATCH, DELETE)
-    # ──────────────────────────────────────────────────────────────
-    #
+    
+    
     @app.cli.command("db-init")
     def init_db():
         """Crea las tablas en la base de datos."""
