@@ -60,7 +60,14 @@ def update_task(task_id):
     db.session.commit()
     return jsonify(tarea.to_dict()), 200
 
+def get_task_by_id(task_id):
+    tarea = Task.query.get(task_id)
+    if not tarea:
+        return jsonify({"error": "Tarea no encontrada"}), 404
+    return jsonify(tarea.to_dict()), 200
+
 def delete_task(task_id):
+
     tarea = Task.query.get(task_id)
     if not tarea:
         return jsonify({"error": "Tarea no encontrada"}), 404

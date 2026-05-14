@@ -23,12 +23,14 @@ Un **Gestor de Tareas** simple con usuarios y tareas. Un usuario puede tener muc
 ### Entidades principales
 
 **User (Usuario)**
+
 - `id` (int, PK)
 - `name` (string, obligatorio)
 - `email` (string, obligatorio, único)
 - `created_at` (timestamp)
 
 **Task (Tarea)**
+
 - `id` (int, PK)
 - `title` (string, obligatorio)
 - `description` (text, opcional)
@@ -46,29 +48,32 @@ Un **Gestor de Tareas** simple con usuarios y tareas. Un usuario puede tener muc
 
 Construir una API REST con los siguientes endpoints:
 
-| Método | Endpoint | Descripción |
-|---|---|---|
-| `GET` | `/api/users` | Listar todos los usuarios |
-| `POST` | `/api/users` | Crear un usuario |
-| `GET` | `/api/tasks` | Listar todas las tareas (con filtros — ver abajo) |
-| `POST` | `/api/tasks` | Crear una tarea |
-| `GET` | `/api/tasks/<id>` | Obtener una tarea con la info de su usuario |
-| `PATCH` | `/api/tasks/<id>` | Actualizar una tarea (cualquier campo) |
-| `DELETE` | `/api/tasks/<id>` | Eliminar una tarea |
+| Método   | Endpoint          | Descripción                                       |
+| -------- | ----------------- | ------------------------------------------------- |
+| `GET`    | `/api/users`      | Listar todos los usuarios                         |
+| `POST`   | `/api/users`      | Crear un usuario                                  |
+| `GET`    | `/api/tasks`      | Listar todas las tareas (con filtros — ver abajo) |
+| `POST`   | `/api/tasks`      | Crear una tarea                                   |
+| `GET`    | `/api/tasks/<id>` | Obtener una tarea con la info de su usuario       |
+| `PATCH`  | `/api/tasks/<id>` | Actualizar una tarea (cualquier campo)            |
+| `DELETE` | `/api/tasks/<id>` | Eliminar una tarea                                |
 
 **Filtros en `GET /api/tasks` (query params):**
+
 - `?status=pending` — filtrar por estado
 - `?priority=high` — filtrar por prioridad
 - `?user_id=3` — filtrar por usuario
 - Los filtros deben poder combinarse (ej. `?status=pending&priority=high`)
 
 **Requisitos de validación:**
+
 - Los campos obligatorios deben validarse (devolver `400` con mensaje de error claro)
 - Los valores de enum inválidos deben rechazarse
 - IDs inexistentes devuelven `404`
 - Emails duplicados devuelven `409`
 
 **Formato de respuesta:** Todas las respuestas deben ser JSON. Los errores deben seguir esta forma:
+
 ```json
 { "error": "mensaje describiendo qué salió mal" }
 ```
@@ -81,17 +86,18 @@ Construir una single-page app con las siguientes vistas y componentes:
 
 Mostrar todas las tareas en una lista o grid. Cada tarea debe mostrar:
 
-| Campo | Comportamiento |
-|---|---|
-| Título | Texto plano |
-| Descripción | Truncar si es muy larga (ej. mostrar primeras 100 chars + "...") |
-| Estado | Badge/píldora con color distinto por estado (ej. amarillo `pending`, azul `in_progress`, verde `done`) |
-| Prioridad | Indicador visual (color, ícono o texto) |
-| Usuario asignado | Nombre del usuario (no solo el ID) |
-| Fecha de creación | Formato legible (ej. "13/05/2026" o "hace 3 días") |
-| Acciones | Botones de cambiar estado y eliminar |
+| Campo             | Comportamiento                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------ |
+| Título            | Texto plano                                                                                            |
+| Descripción       | Truncar si es muy larga (ej. mostrar primeras 100 chars + "...")                                       |
+| Estado            | Badge/píldora con color distinto por estado (ej. amarillo `pending`, azul `in_progress`, verde `done`) |
+| Prioridad         | Indicador visual (color, ícono o texto)                                                                |
+| Usuario asignado  | Nombre del usuario (no solo el ID)                                                                     |
+| Fecha de creación | Formato legible (ej. "13/05/2026" o "hace 3 días")                                                     |
+| Acciones          | Botones de cambiar estado y eliminar                                                                   |
 
 **Comportamiento:**
+
 - Si no hay tareas, mostrar un mensaje vacío (ej. "No hay tareas todavía. Crea la primera.").
 - Si la API tarda más de ~300ms, mostrar un spinner o skeleton.
 - Si la API falla, mostrar el mensaje de error con un botón de "Reintentar".
@@ -101,16 +107,19 @@ Mostrar todas las tareas en una lista o grid. Cada tarea debe mostrar:
 Puede ser un modal, una sección colapsable o un componente inline — tu decides.
 
 **Campos:**
+
 - `title` — input de texto, **obligatorio**, mínimo 3 caracteres.
 - `description` — textarea, opcional.
 - `priority` — select con `low` / `medium` / `high`, default `medium`.
 - `user_id` — dropdown poblado desde `GET /api/users`.
 
 **Validaciones en el cliente (antes de mandar el POST):**
+
 - Botón "Crear" deshabilitado si `title` está vacío o no se eligió usuario.
 - Mostrar mensajes de error junto al campo correspondiente (no en un alert).
 
 **Después de crear:**
+
 - Limpiar el formulario.
 - Agregar la nueva tarea a la lista sin recargar.
 - Si el backend devuelve error (ej. 400 o 409), mostrarlo al usuario.
@@ -124,6 +133,7 @@ Desde la lista, el usuario debe poder cambiar el estado de una tarea sin abrir o
 - Un menú contextual con las opciones.
 
 **Comportamiento:**
+
 - Mientras la request está en vuelo, el control debe estar deshabilitado o mostrar feedback visual.
 - Si falla, revertir al estado anterior y mostrar el error.
 
@@ -213,14 +223,14 @@ La app estará en `http://localhost:5173`.
 
 ## 📋 Qué vamos a evaluar
 
-| Área | Qué buscamos |
-|---|---|
-| **Calidad del código** | Nombres claros, estructura sensata, sin código muerto. |
-| **Diseño del API** | Verbos HTTP correctos, status codes, forma del JSON, manejo de errores. |
-| **Modelado de la BD** | Relaciones apropiadas, foreign keys, tipos de columnas sensatos. |
-| **Skills de React** | Estructura de componentes, manejo de estado, sin anti-patterns obvios. |
-| **Higiene de Git** | Varios commits con sentido, no un único commit gigante de "versión final". |
-| **README actualizado** | Documentas cómo correr TU versión, qué hiciste, qué dejaste fuera. |
+| Área                   | Qué buscamos                                                               |
+| ---------------------- | -------------------------------------------------------------------------- |
+| **Calidad del código** | Nombres claros, estructura sensata, sin código muerto.                     |
+| **Diseño del API**     | Verbos HTTP correctos, status codes, forma del JSON, manejo de errores.    |
+| **Modelado de la BD**  | Relaciones apropiadas, foreign keys, tipos de columnas sensatos.           |
+| **Skills de React**    | Estructura de componentes, manejo de estado, sin anti-patterns obvios.     |
+| **Higiene de Git**     | Varios commits con sentido, no un único commit gigante de "versión final". |
+| **README actualizado** | Documentas cómo correr TU versión, qué hiciste, qué dejaste fuera.         |
 
 ---
 
@@ -262,3 +272,23 @@ Al final de tu README, por favor responde estas brevemente (2-4 oraciones cada u
 ¡Mucho éxito! 🚀
 
 Cuando termines, envíanos el link del repo más una estimación de cuántas horas realmente le dedicaste.
+
+---
+
+1. **¿Por qué estructuraste el backend de esa manera?** (carpetas, archivos, blueprints, etc.)
+
+El backend esta estructurado con MCV(Modelo,vista,controlador) para tener una mejor organizacion de los archivos y que sea mas facil de entender y modificar. Trabajo con larave y siempre estructuro mis proyectos de esta manera. Me da mucha escalabilidad y lo hace mas estable, ademas de que hace que el codigo sea mas limpio y ordenado.(nota:si se que no hay vistas en el backend, pero esta es la estructura que uso siempre.)
+
+2. **¿Cómo escalarías esto a 1 millón de tareas?** ¿Qué cambiarías?
+primero siento que lo primero seria pasar a usar base de datos relacionales,despues usar un franworks mas robusto para el manejo de tareas. no se mucho como funciona aws pero seguro que con eso ayudaria mucho y ya no sabria mucho mas que hacer para que soporte tantas tareas,investigue un poco y vi que hay muchas cosas que se podrian hacer como pasar a un sistema de colas, usar un sistema de cache, etc. pero no tengo conocimiento de eso.
+
+
+3. **¿Qué es una cosa en tu código con la que no estás contento, pero no tuviste tiempo de arreglar?**
+el css me hubiera gustado dejarlo mas bonito, pero el tiempo no me lo permitio,crear mas componentes que tengan que ver con los filtros y ordenamientos,modales para editar o eliminar la tarea,acordeones para ocultar detalles de la tarea, mejorar las transiciones entre cambios de estado,etc.(algunas no son arreglar, son mas implementar)
+
+4. **Si tuvieras que agregar autenticación, ¿por dónde empezarías?**
+yo haria un sistema de roles y permisos, añadiria roles de admin podra crear a futuros usuarios ellos tendrian que estar precargados en el sistema para poder iniciar sesion, y el usuario normal solo podra crear y editar sus tareas. obviamente crearia la vista de inicio de sesion, registro, etc, y tambien las rutas protegidas, etc.
+
+la verdad que muchas gracias por la oportunidad, me gusto mucho el desafio. esto me dio muchos conocimientos nuevos y reforce otros que ya tenia, aprendi a usar flask y react. no sere un experto pero poco a poco ire mejorando. 
+
+le dedique alrededor de unas 7 horas y 30 minutos

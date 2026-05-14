@@ -1,4 +1,5 @@
 from flask import jsonify, request
+from sqlalchemy.exc import IntegrityError
 from model import db, User
 
 def get_all_users():
@@ -15,6 +16,9 @@ def create_new_user():
         db.session.add(nuevo_usuario)
         db.session.commit()
         return jsonify(nuevo_usuario.to_dict()), 201
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": "El email ya está en uso."}), 409
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 400

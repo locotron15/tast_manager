@@ -1,5 +1,12 @@
 from flask import Blueprint
-from controllers.user_controller import get_all_users, create_new_user, delete_user, get_user_by_id, update_user
+from controllers import (
+    get_all_users, 
+    create_new_user, 
+    delete_user, 
+    get_user_by_id, 
+    update_user
+)
+
 
 user_bp = Blueprint('user_bp', __name__)
 
