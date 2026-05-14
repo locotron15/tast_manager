@@ -24,14 +24,10 @@ from model import db
 
 load_dotenv()
 
-
+#crea la aplicacion y configura la base de datos
 def create_app():
     app = Flask(__name__)
 
-    # ──────────────────────────────────────────────────────────────
-    # TODO: Configurar la conexión a la base de datos desde DATABASE_URL.
-    #   Pista: app.config["SQLALCHEMY_DATABASE_URI"] = ...
-    # ──────────────────────────────────────────────────────────────
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -45,12 +41,13 @@ def create_app():
     from routes.task_routes import task_bp
     app.register_blueprint(task_bp)
 
+
     @app.route("/api/health")
     def health():
         """Sanity check — déjalo así, lo usamos para verificar que tu servidor corre."""
         return jsonify({"status": "ok"})
     
-    
+
     @app.cli.command("db-init")
     def init_db():
         """Crea las tablas en la base de datos."""

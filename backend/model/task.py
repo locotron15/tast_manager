@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from .base import db
 
+# Definicion de estados y prioridades
 class EstadoTarea(str, Enum):
     PENDIENTE = "pendiente"
     EN_PROGRESO = "en_progreso"
@@ -12,6 +13,7 @@ class PrioridadTarea(str, Enum):
     MEDIA = "media"
     ALTA = "alta"
 
+# Modelo de tarea
 class Task(db.Model):
     __tablename__ = "tasks"
     
@@ -24,6 +26,7 @@ class Task(db.Model):
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))  
 
+    #Metodo para convertir la tarea a diccionario
     def to_dict(self):
         return {
             "id": self.id,
@@ -31,6 +34,7 @@ class Task(db.Model):
             "description": self.description,
             "status": self.status.value,
             "priority": self.priority.value,
+            "user":self.user.name,
             "user_id": self.user_id,
             "created_at": self.created_at.isoformat(),
             "updated_at": self.updated_at.isoformat()

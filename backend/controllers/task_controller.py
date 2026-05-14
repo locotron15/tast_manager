@@ -26,7 +26,7 @@ def create_task():
     # El título y el user_id son obligatorios
     if not datos or 'title' not in datos or 'user_id' not in datos:
         return jsonify({"error": "Faltan datos obligatorios (title, user_id)"}), 400
-    
+
     try:
         nueva_tarea = Task(
             title=datos['title'],

@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from .base import db
 
-
+# Modelo de usuario
 class User(db.Model):
     __tablename__ = "users"
     
@@ -10,9 +10,10 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
-  
+    #Relacion con tasks
     tasks = db.relationship("Task", backref="user", lazy=True)
 
+    #Metodo para convertir el usuario a diccionario 
     def to_dict(self):
         return {
             "id": self.id,
